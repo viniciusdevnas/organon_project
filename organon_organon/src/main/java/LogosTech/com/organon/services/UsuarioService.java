@@ -24,7 +24,7 @@ public class UsuarioService {
     
     
    
-    	public Usuario cadastrar( String email, String senha, String nome, boolean ativo) {
+    	public Usuario cadastrar( String email, String senha, String nome) {
     	    if (usuarioRepository.existsByEmail(email)) {
     	        throw new EmailJaCadastradoException("Email já cadastrado");
     	    }

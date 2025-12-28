@@ -8,33 +8,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import LogosTech.com.organon.domain.usuario.Usuario;
+import LogosTech.com.organon.dto.request.UsuarioRequestDTO;
+import LogosTech.com.organon.dto.response.UsuarioResponseDTO;
 import LogosTech.com.organon.services.AuthService;
+import LogosTech.com.organon.services.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("./usuario")
 public class UsuarioController {
 	
-	@Autowired
-    private AuthService authService;
-
-    // DTO simples para receber JSON
-    public static class LoginRequest {
-        public String email;
-        public String senha;
-    }
-
-	public ResponseEntity<String> getTeste(){
-		return ResponseEntity.ok("Sucesso!");
+	private final UsuarioService usuarioService;
+	
+	public UsuarioController(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
 	}
 	
-	@PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        try {
-            Usuario usuario = authService.autenticar(request.email, request.senha);
-            return ResponseEntity.ok("Login bem-sucedido! Bem-vindo, " + usuario.getNome());
-            // Futuro: return ResponseEntity.ok(jwtToken);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+	public ResponseEntity<UsuarioResponseDTO> cadastro(@Valid @RequestBody UsuarioRequestDTO dto){
+		
+		Usuario usuario = usuarioService.cadastrar(dto.getEmail(), dto.getSenha(), dto.getNome());
+		
+		UsuarioResponseDTO response = new UsuarioResponseDTO(usuario.getIdUser(), usuario.getEmail(), usuario.getNome());
+		
+		return ResponseEntity.ok(response);
+	}
 }
