@@ -1,6 +1,7 @@
 package LogosTech.com.organon.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class AuthController {
 	public AuthController(AuthService authService) {
 		this.authService = authService;
 	}
-	
+	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> login (@Valid @RequestBody LoginRequestDTO dto) {
 		
 		Usuario usuario = authService.autenticar(dto.getEmail(), dto.getSenha());
