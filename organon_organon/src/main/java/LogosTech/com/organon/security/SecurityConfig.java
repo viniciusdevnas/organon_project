@@ -26,14 +26,16 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(sess ->
-                sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+            
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/orientado/**").hasAllRoles("ORIENTADO", "ORIENTADOR", "GERENTE_DE_PROJETO")
+                .requestMatchers("/orientador/**").hasAllRoles("ORIENTADOR", "GERENTE_DE_PROJETO")
+                .requestMatchers("/admin/**").hasAllRoles("ORIENTADOR", "GERENTE_DE_PROJETO")
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
