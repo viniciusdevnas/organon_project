@@ -2,27 +2,19 @@ package LogosTech.com.organon.dto.response;
 
 public class LoginResponseDTO {
 
-	private Long id;
-    private String email;
+    private String token;
+    private String tipo;
 
-    public LoginResponseDTO(Long id, String email) {
-        this.id = id;
-        this.email = email;
+    public LoginResponseDTO(String token) {
+        this.token = token;
+        this.tipo = "Bearer";
     }
 
-	public Long getId() {
-		return id;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getTipo() {
+        return tipo;
+    }
 }

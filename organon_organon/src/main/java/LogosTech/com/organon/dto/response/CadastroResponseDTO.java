@@ -1,12 +1,15 @@
 package LogosTech.com.organon.dto.response;
 
-public class UsuarioResponseDTO {
+import LogosTech.com.organon.domain.usuario.Funcao;
+
+public class CadastroResponseDTO {
 
 	private Long id;
     private String email;
     private String nome;
+    
 
-    public UsuarioResponseDTO(Long id, String email, String nome) {
+    public CadastroResponseDTO(Long id, String email, String nome) {
         this.id = id;
         this.email = email;
         this.nome = nome;
@@ -16,23 +19,14 @@ public class UsuarioResponseDTO {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
 }

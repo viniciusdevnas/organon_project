@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import LogosTech.com.organon.domain.repositories.UsuarioRepository;
+import LogosTech.com.organon.domain.usuario.Funcao;
 import LogosTech.com.organon.domain.usuario.Usuario;
 import LogosTech.com.organon.exception.EmailJaCadastradoException;
 

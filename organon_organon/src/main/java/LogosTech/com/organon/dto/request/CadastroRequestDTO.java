@@ -1,9 +1,11 @@
 package LogosTech.com.organon.dto.request;
 
+import LogosTech.com.organon.domain.usuario.Funcao;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public class UsuarioRequestDTO {
+public class CadastroRequestDTO {
 
     @NotBlank(message = "Email é obrigatório")
     @Email(message = "Email inválido")
@@ -14,8 +16,9 @@ public class UsuarioRequestDTO {
     
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
+    
 
-    public String getNome() {
+	public String getNome() {
 		return nome;
 	}
 

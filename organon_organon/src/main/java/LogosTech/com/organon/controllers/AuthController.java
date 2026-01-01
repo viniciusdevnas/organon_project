@@ -1,6 +1,7 @@
 package LogosTech.com.organon.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import LogosTech.com.organon.domain.usuario.Usuario;
 import LogosTech.com.organon.dto.request.LoginRequestDTO;
+import LogosTech.com.organon.dto.request.CadastroRequestDTO;
+import LogosTech.com.organon.dto.response.CadastroResponseDTO;
 import LogosTech.com.organon.dto.response.LoginResponseDTO;
 import LogosTech.com.organon.services.AuthService;
+import LogosTech.com.organon.services.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -17,18 +21,30 @@ import jakarta.validation.Valid;
 public class AuthController {
 
 	private final AuthService authService;
+	private final UsuarioService usuarioService;
 	
-	public AuthController(AuthService authService) {
+	public AuthController(AuthService authService, UsuarioService usuarioService) {
 		this.authService = authService;
+		this.usuarioService = usuarioService;
 	}
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDTO> login (@Valid @RequestBody LoginRequestDTO dto) {
+	public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+
+	    String token = authService.login(dto.getEmail(), dto.getSenha());
+
+	    return ResponseEntity.ok(new LoginResponseDTO(token));
+	}
+	
+	@PostMapping("/cadastro")
+	public ResponseEntity<CadastroResponseDTO> cadastro(@Valid @RequestBody CadastroRequestDTO dto){
 		
-		Usuario usuario = authService.autenticar(dto.getEmail(), dto.getSenha());
+		Usuario usuario = usuarioService.cadastrar(dto.getEmail(), dto.getSenha(), dto.getNome());
 		
-		LoginResponseDTO response = new LoginResponseDTO(usuario.getIdUser(), usuario.getEmail());
+		CadastroResponseDTO response = new CadastroResponseDTO(usuario.getIdUser(), usuario.getEmail(), usuario.getNome());
 		
 		return ResponseEntity.ok(response);
 	}
+
+
 	
 }

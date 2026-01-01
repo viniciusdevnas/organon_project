@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import LogosTech.com.organon.domain.usuario.Usuario;
-import LogosTech.com.organon.dto.request.UsuarioRequestDTO;
-import LogosTech.com.organon.dto.response.UsuarioResponseDTO;
+import LogosTech.com.organon.dto.request.CadastroRequestDTO;
+import LogosTech.com.organon.dto.response.CadastroResponseDTO;
 import LogosTech.com.organon.services.AuthService;
 import LogosTech.com.organon.services.UsuarioService;
 import jakarta.validation.Valid;
@@ -24,12 +24,4 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 	
-	public ResponseEntity<UsuarioResponseDTO> cadastro(@Valid @RequestBody UsuarioRequestDTO dto){
-		
-		Usuario usuario = usuarioService.cadastrar(dto.getEmail(), dto.getSenha(), dto.getNome());
-		
-		UsuarioResponseDTO response = new UsuarioResponseDTO(usuario.getIdUser(), usuario.getEmail(), usuario.getNome());
-		
-		return ResponseEntity.ok(response);
-	}
 }

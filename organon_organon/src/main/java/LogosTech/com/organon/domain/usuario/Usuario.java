@@ -42,13 +42,11 @@ public class Usuario {
 	private boolean ativo = true;
 	
 	 @Enumerated(EnumType.STRING)
-	 @Column(nullable = false)
+	 @Column(name = "funcao",nullable = false)
 	 private Funcao funcao;
 	 
 	 @Column(name = "data_criacao", updatable = false, nullable = false)
 	 private LocalDateTime dataCriacao;
-	
-	 
 	 
 	 @PrePersist
 	    protected void onCreate() {

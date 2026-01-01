@@ -1,34 +1,40 @@
 package LogosTech.com.organon.services;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import LogosTech.com.organon.domain.exceptions.CredenciaisInvalidasException;
 import LogosTech.com.organon.domain.repositories.UsuarioRepository;
 import LogosTech.com.organon.domain.usuario.Usuario;
+import LogosTech.com.organon.security.jwt.JwtService;
 
 @Service
 public class AuthService {
 
 	private final UsuarioRepository usuarioRepository;
-    private final PasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(UsuarioRepository usuarioRepository,
-                       PasswordService passwordService) {
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
         this.usuarioRepository = usuarioRepository;
-        this.passwordService = passwordService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
-    public Usuario autenticar(String email, String senha) {
+    public String login(String email, String senha) {
 
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(CredenciaisInvalidasException::new);
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!passwordService.verificar(senha, usuario.getSenhaHash())) {
-            throw new CredenciaisInvalidasException();
+        if (!passwordEncoder.matches(senha, usuario.getSenhaHash())) {
+            throw new RuntimeException("Senha inválida");
         }
 
-        return usuario;
+        return jwtService.gerarToken(usuario);
     }
 }
