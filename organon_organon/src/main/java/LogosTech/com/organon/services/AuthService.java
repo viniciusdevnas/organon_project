@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import LogosTech.com.organon.domain.exceptions.CredenciaisInvalidasException;
 import LogosTech.com.organon.domain.repositories.UsuarioRepository;
 import LogosTech.com.organon.domain.usuario.Usuario;
+import LogosTech.com.organon.dto.request.LoginRequestDTO;
+import LogosTech.com.organon.dto.response.LoginResponseDTO;
 import LogosTech.com.organon.security.jwt.JwtService;
 
 @Service
@@ -26,15 +28,17 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String login(String email, String senha) {
+    public LoginResponseDTO login(LoginRequestDTO dto) {
 
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!passwordEncoder.matches(senha, usuario.getSenhaHash())) {
+        if (!passwordEncoder.matches(dto.getSenha(), usuario.getSenhaHash())) {
             throw new RuntimeException("Senha inválida");
         }
 
-        return jwtService.gerarToken(usuario);
+        String token = jwtService.gerarToken(usuario);
+        
+        return new LoginResponseDTO(token, usuario.getEmail(), usuario.getFuncao());
     }
 }

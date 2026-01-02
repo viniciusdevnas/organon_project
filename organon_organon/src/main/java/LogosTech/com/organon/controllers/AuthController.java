@@ -1,6 +1,7 @@
 package LogosTech.com.organon.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import LogosTech.com.organon.services.AuthService;
 import LogosTech.com.organon.services.UsuarioService;
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -28,11 +30,11 @@ public class AuthController {
 		this.usuarioService = usuarioService;
 	}
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO dto) {
 
-	    String token = authService.login(dto.getEmail(), dto.getSenha());
+	    LoginResponseDTO response = authService.login(dto);
 
-	    return ResponseEntity.ok(new LoginResponseDTO(token));
+	    return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/cadastro")
@@ -40,7 +42,8 @@ public class AuthController {
 		
 		Usuario usuario = usuarioService.cadastrar(dto.getEmail(), dto.getSenha(), dto.getNome());
 		
-		CadastroResponseDTO response = new CadastroResponseDTO(usuario.getIdUser(), usuario.getEmail(), usuario.getNome());
+		CadastroResponseDTO response = new CadastroResponseDTO(usuario.getIdUser(), usuario.getEmail(), 
+				usuario.getNome(), usuario.getFuncao());
 		
 		return ResponseEntity.ok(response);
 	}

@@ -43,7 +43,7 @@ public class Usuario {
 	
 	 @Enumerated(EnumType.STRING)
 	 @Column(name = "funcao",nullable = false)
-	 private Funcao funcao;
+	 private Funcao funcao = Funcao.ORIENTADO;
 	 
 	 @Column(name = "data_criacao", updatable = false, nullable = false)
 	 private LocalDateTime dataCriacao;
