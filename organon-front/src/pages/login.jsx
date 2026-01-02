@@ -2,7 +2,7 @@ import {login} from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";   
-
+// importando o hook useAuth do contexto de autenticação
 function Login(){
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
