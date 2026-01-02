@@ -17,6 +17,16 @@ public class CadastroRequestDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
     
+    @NotNull(message = "Função é obrigatória")
+    private Funcao funcao;
+
+    public Funcao getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(Funcao funcao) {
+		this.funcao = funcao;
+	}
 
 	public String getNome() {
 		return nome;
